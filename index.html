@@ -4,8 +4,22 @@
     <meta charset="UTF-8">
     <title>SQL Öğrenme Uygulaması</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; font-size: 14px; }
+        body { font-family: Arial, sans-serif; margin: 0; display: flex; }
+        .sidebar {
+            position: sticky;
+            top: 0;
+            width: 30%;
+            height: 100vh;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-right: 1px solid #ccc;
+        }
+        .main {
+            width: 70%;
+            padding: 40px;
+        }
+        table { border-collapse: collapse; margin-bottom: 30px; font-size: 14px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background-color: #f4f4f4; }
         textarea { width: 100%; height: 50px; }
@@ -16,49 +30,38 @@
     </style>
 </head>
 <body>
-
-<h1>📊 SQL Öğren - Bankacılık Verisi Üzerinden</h1>
-
-<div class="score">✅ Doğru Sayısı: <span id="score">0</span> / 10</div>
-
-<h2>📁 Veri Tabloları</h2>
-
-<div style="display: flex; gap: 40px; align-items: flex-start;">
-  <div>
-    <h4>customers</h4>
-    <table class="small-table">
-        <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th></tr>
-        <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td></tr>
-        <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td></tr>
-        <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td></tr>
-    </table>
-  </div>
-  <div>
-    <h4>loans</h4>
-    <table class="small-table">
-        <tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr>
-        <tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr>
-        <tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr>
-    </table>
-  </div>
-  <div>
-    <h4>defaults</h4>
-    <table class="small-table">
-        <tr><th>default_id</th><th>customer_id</th><th>reason</th></tr>
-        <tr><td>1</td><td>2</td><td>missed payments</td></tr>
-    </table>
-  </div>
-  <div>
-    <h4>payments</h4>
-    <table class="small-table">
-        <tr><th>payment_id</th><th>loan_id</th><th>amount_paid</th></tr>
-        <tr><td>1</td><td>1</td><td>3000</td></tr>
-    </table>
-  </div>
+<div class="sidebar">
+  <h2>📁 Tablolar</h2>
+  <h4>customers</h4>
+  <table class="small-table">
+      <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr>
+      <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr>
+      <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr>
+      <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr>
+  </table>
+  <h4>loans</h4>
+  <table class="small-table">
+      <tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr>
+      <tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr>
+      <tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr>
+  </table>
+  <h4>defaults</h4>
+  <table class="small-table">
+      <tr><th>default_id</th><th>customer_id</th><th>reason</th></tr>
+      <tr><td>1</td><td>2</td><td>missed payments</td></tr>
+  </table>
+  <h4>payments</h4>
+  <table class="small-table">
+      <tr><th>payment_id</th><th>loan_id</th><th>amount_paid</th></tr>
+      <tr><td>1</td><td>1</td><td>3000</td></tr>
+  </table>
 </div>
-
+<div class="main">
+<h1>📊 SQL Öğren - Bankacılık Verisi Üzerinden</h1>
+<div class="score">✅ Doğru Sayısı: <span id="score">0</span> / 10</div>
 <h2>🧠 SQL Soru Seti</h2>
 <div id="questions"></div>
+</div>
 
 <script>
 const questions = [
@@ -78,7 +81,6 @@ const questions = [
     answer: "SELECT name FROM customers WHERE credit_score > 700;",
     output: `<table class='small-table'><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>`
   }
-  // Diğer sorular aynı mantıkla devam edebilir
 ];
 
 let score = 0;
