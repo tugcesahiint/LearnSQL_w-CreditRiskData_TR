@@ -1,54 +1,145 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SQL Öğrenme Uygulaması</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; display: flex; }
+    :root {
+      --bg: #ffffff;
+      --text: #222;
+      --box: #f9f9f9;
+      --border: #ccc;
+      --primary: #3498db;
+    }
+    body.dark {
+      --bg: #121212;
+      --text: #eee;
+      --box: #1e1e1e;
+      --border: #444;
+      --primary: #00b894;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: row;
+      min-height: 100vh;
+    }
     .sidebar {
+      width: 30%;
+      padding: 20px;
+      background-color: var(--box);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
       position: sticky;
       top: 0;
-      width: 30%;
       height: 100vh;
-      overflow-y: auto;
-      background: #f9f9f9;
-      padding: 20px;
-      border-right: 1px solid #ccc;
     }
     .main {
-      width: 70%;
+      flex: 1;
       padding: 40px;
     }
-    table { border-collapse: collapse; margin-bottom: 20px; font-size: 12px; max-width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
-    th { background-color: #f4f4f4; }
-    textarea { width: 100%; height: 50px; margin-bottom: 10px; }
-    .correct { color: green; font-weight: bold; }
-    .wrong { color: red; font-weight: bold; }
-    .score { font-size: 18px; margin-bottom: 10px; }
-    .small-table { width: 100%; overflow-x: auto; display: block; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 6px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--primary);
+      color: white;
+    }
+    textarea {
+      width: 100%;
+      padding: 8px;
+      font-family: monospace;
+      font-size: 14px;
+      background-color: var(--box);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      resize: vertical;
+    }
+    button {
+      padding: 6px 12px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .correct {
+      color: limegreen;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .wrong {
+      color: red;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .score {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
     .congrats {
       font-size: 24px;
-      color: #2ecc71;
       font-weight: bold;
-      animation: pop 0.7s ease-in-out infinite alternate;
-      margin-top: 20px;
+      color: var(--primary);
+      animation: pulse 0.7s ease-in-out infinite alternate;
       text-align: center;
       display: none;
     }
-    @keyframes pop {
+    @keyframes pulse {
       from { transform: scale(1); }
-      to { transform: scale(1.1); }
+      to { transform: scale(1.05); }
+    }
+    .topbar {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+    }
+    .theme-toggle {
+      background: none;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .theme-toggle:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    @media screen and (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: relative; }
+      .main { padding: 20px; }
     }
   </style>
 </head>
 <body>
-
+<div class="topbar">
+  <button class="theme-toggle" onclick="toggleTheme()">🌙/☀️</button>
+</div>
 <div class="sidebar">
   <h2>📁 Tablolar</h2>
 
   <h4>customers</h4>
-  <table class="small-table">
+  <table>
     <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr>
     <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr>
     <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr>
@@ -56,20 +147,20 @@
   </table>
 
   <h4>loans</h4>
-  <table class="small-table">
+  <table>
     <tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr>
     <tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr>
     <tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr>
   </table>
 
   <h4>defaults</h4>
-  <table class="small-table">
+  <table>
     <tr><th>default_id</th><th>customer_id</th><th>reason</th></tr>
     <tr><td>1</td><td>2</td><td>missed payments</td></tr>
   </table>
 
   <h4>payments</h4>
-  <table class="small-table">
+  <table>
     <tr><th>payment_id</th><th>loan_id</th><th>amount_paid</th></tr>
     <tr><td>1</td><td>1</td><td>3000</td></tr>
   </table>
@@ -82,7 +173,6 @@
   <h2>🧠 SQL Soru Seti</h2>
   <div id="questions"></div>
 </div>
-
 <script>
 const questions = [
   {
@@ -91,7 +181,7 @@ const questions = [
     example: "SELECT name FROM customers;",
     question: "Tüm müşterilerin doğum yılını listeleyin.",
     answer: "SELECT birth_year FROM customers;",
-    output: `<table class='small-table'><tr><th>birth_year</th></tr><tr><td>1985</td></tr><tr><td>1990</td></tr><tr><td>1995</td></tr></table>`
+    output: `<table><tr><th>birth_year</th></tr><tr><td>1985</td></tr><tr><td>1990</td></tr><tr><td>1995</td></tr></table>`
   },
   {
     title: "2. WHERE ile Filtreleme",
@@ -99,7 +189,7 @@ const questions = [
     example: "SELECT * FROM customers WHERE credit_score > 600;",
     question: "Kredi skoru 700'ün üzerinde olan müşterilerin adlarını listeleyin.",
     answer: "SELECT name FROM customers WHERE credit_score > 700;",
-    output: `<table class='small-table'><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>`
+    output: `<table><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>`
   },
   {
     title: "3. AND Kullanımı",
@@ -107,7 +197,7 @@ const questions = [
     example: "SELECT * FROM customers WHERE income > 4000 AND city = 'Istanbul';",
     question: "Istanbul'da yaşayan ve kredi skoru 600'den büyük olan kişilerin adını listeleyin.",
     answer: "SELECT name FROM customers WHERE city = 'Istanbul' AND credit_score > 600;",
-    output: `<table class='small-table'><tr><th>name</th></tr><tr><td>Ahmet Yilmaz</td></tr></table>`
+    output: `<table><tr><th>name</th></tr><tr><td>Ahmet Yilmaz</td></tr></table>`
   },
   {
     title: "4. OR Kullanımı",
@@ -115,7 +205,7 @@ const questions = [
     example: "SELECT name FROM customers WHERE city = 'Ankara' OR city = 'Izmir';",
     question: "Kredi skoru 720 ya da geliri 3000 olan müşterilerin adını listeleyin.",
     answer: "SELECT name FROM customers WHERE credit_score = 720 OR income = 3000;",
-    output: `<table class='small-table'><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr><tr><td>Can Kaya</td></tr></table>`
+    output: `<table><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr><tr><td>Can Kaya</td></tr></table>`
   },
   {
     title: "5. ORDER BY ile Sıralama",
@@ -123,7 +213,7 @@ const questions = [
     example: "SELECT name FROM customers ORDER BY income DESC;",
     question: "Müşterileri doğum yılına göre küçükten büyüğe sırala.",
     answer: "SELECT * FROM customers ORDER BY birth_year ASC;",
-    output: `<table class='small-table'><tr><th>customer_id</th><th>name</th><th>birth_year</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>1985</td></tr><tr><td>2</td><td>Ayse Demir</td><td>1990</td></tr><tr><td>3</td><td>Can Kaya</td><td>1995</td></tr></table>`
+    output: `<table><tr><th>customer_id</th><th>name</th><th>birth_year</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>1985</td></tr><tr><td>2</td><td>Ayse Demir</td><td>1990</td></tr><tr><td>3</td><td>Can Kaya</td><td>1995</td></tr></table>`
   },
   {
     title: "6. LIMIT ile Sınırlama",
@@ -131,7 +221,7 @@ const questions = [
     example: "SELECT * FROM customers LIMIT 2;",
     question: "customers tablosundan yalnızca ilk müşteriyi seç.",
     answer: "SELECT * FROM customers LIMIT 1;",
-    output: `<table class='small-table'><tr><th>customer_id</th><th>name</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td></tr></table>`
+    output: `<table><tr><th>customer_id</th><th>name</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td></tr></table>`
   },
   {
     title: "7. COUNT ile Sayı Alma",
@@ -139,7 +229,7 @@ const questions = [
     example: "SELECT COUNT(*) FROM customers;",
     question: "Kredi skoru 600'den düşük müşteri sayısını getir.",
     answer: "SELECT COUNT(*) FROM customers WHERE credit_score < 600;",
-    output: `<table class='small-table'><tr><th>COUNT(*)</th></tr><tr><td>1</td></tr></table>`
+    output: `<table><tr><th>COUNT(*)</th></tr><tr><td>1</td></tr></table>`
   },
   {
     title: "8. JOIN ile Tablo Birleştirme",
@@ -147,7 +237,7 @@ const questions = [
     example: "SELECT * FROM customers JOIN loans ON customers.customer_id = loans.customer_id;",
     question: "customers ve loans tablolarını birleştirerek ad ve loan amount bilgisini göster.",
     answer: "SELECT name, amount FROM customers JOIN loans ON customers.customer_id = loans.customer_id;",
-    output: `<table class='small-table'><tr><th>name</th><th>amount</th></tr><tr><td>Ahmet Yilmaz</td><td>10000</td></tr><tr><td>Ayse Demir</td><td>15000</td></tr></table>`
+    output: `<table><tr><th>name</th><th>amount</th></tr><tr><td>Ahmet Yilmaz</td><td>10000</td></tr><tr><td>Ayse Demir</td><td>15000</td></tr></table>`
   },
   {
     title: "9. DISTINCT ile Tekrarları Engelleme",
@@ -155,7 +245,7 @@ const questions = [
     example: "SELECT DISTINCT city FROM customers;",
     question: "customers tablosundaki benzersiz şehirleri listele.",
     answer: "SELECT DISTINCT city FROM customers;",
-    output: `<table class='small-table'><tr><th>city</th></tr><tr><td>Istanbul</td></tr><tr><td>Ankara</td></tr><tr><td>Izmir</td></tr></table>`
+    output: `<table><tr><th>city</th></tr><tr><td>Istanbul</td></tr><tr><td>Ankara</td></tr><tr><td>Izmir</td></tr></table>`
   },
   {
     title: "10. LIKE ile Metin Arama",
@@ -163,7 +253,7 @@ const questions = [
     example: "SELECT name FROM customers WHERE name LIKE 'A%';",
     question: "Adı 'C' harfiyle başlayan müşterileri listele.",
     answer: "SELECT name FROM customers WHERE name LIKE 'C%';",
-    output: `<table class='small-table'><tr><th>name</th></tr><tr><td>Can Kaya</td></tr></table>`
+    output: `<table><tr><th>name</th></tr><tr><td>Can Kaya</td></tr></table>`
   }
 ];
 
@@ -210,7 +300,11 @@ function checkAnswer(i) {
     document.getElementById('congrats').style.display = 'block';
   }
 }
-</script>
 
+// DARK MODE GEÇİŞ
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+}
+</script>
 </body>
 </html>
