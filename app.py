@@ -1,10 +1,6 @@
 from flask import Flask, render_template_string, request
 import sqlite3
-import nest_asyncio
 import os
-
-# Spyder içinde Flask çalıştırmak için gerekli
-nest_asyncio.apply()
 
 app = Flask(__name__)
 
@@ -90,5 +86,3 @@ def soru(id=1):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host="0.0.0.0", port=port)
-
-    app.run(host="0.0.0.0", port=10000)
