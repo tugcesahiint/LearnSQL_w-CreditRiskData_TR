@@ -87,4 +87,4 @@ def soru(id=1):
     ''', id=id, content=content, result=result, user_sql=user_sql)
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=10000)
