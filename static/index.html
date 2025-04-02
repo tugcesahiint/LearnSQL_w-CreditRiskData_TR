@@ -194,11 +194,11 @@
 </div>
 <script>
 const questions = [
-  {
-    title: "1. SELECT Temelleri",
-    explanation: "SELECT komutu veritabanından veri çekmek için kullanılır.",
-    example: "SELECT name FROM customers;",
-    question: "Tüm müşterilerin doğum yılını listeleyin.",
+   {
+    title: "1. SELECT Komutu ile Temel Veri Çekme",
+    explanation: "SQL'de `SELECT` komutu, bir tablodan veri çekmek için kullanılır. Tüm sütunları almak için `*` (yıldız) kullanılırken, sadece istediğin sütunları da belirtebilirsin.",
+    example: "SELECT * FROM customers;\n-- veya sadece isimler için:\nSELECT name FROM customers;",
+    question: "customers tablosundaki tüm müşterilerin doğum yılını listeleyen SQL komutunu yazın.",
     answer: "SELECT birth_year FROM customers;",
     output: `<table><tr><th>birth_year</th></tr><tr><td>1985</td></tr><tr><td>1990</td></tr><tr><td>1995</td></tr></table>`
   },
