@@ -5,13 +5,14 @@
     <title>SQL Öğrenme Uygulaması</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; font-size: 14px; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background-color: #f4f4f4; }
         textarea { width: 100%; height: 50px; }
         .correct { color: green; font-weight: bold; }
         .wrong { color: red; font-weight: bold; }
         .score { font-size: 20px; margin-bottom: 20px; }
+        .small-table { width: auto; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -22,15 +23,39 @@
 
 <h2>📁 Veri Tabloları</h2>
 
-<h3>customers</h3>
-<table>
-    <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr>
-    <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr>
-    <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr>
-    <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr>
-</table>
-
-<!-- Diğer tablolar buraya eklenebilir (loans, defaults, payments) -->
+<div style="display: flex; gap: 40px; align-items: flex-start;">
+  <div>
+    <h4>customers</h4>
+    <table class="small-table">
+        <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th></tr>
+        <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td></tr>
+        <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td></tr>
+        <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td></tr>
+    </table>
+  </div>
+  <div>
+    <h4>loans</h4>
+    <table class="small-table">
+        <tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr>
+        <tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr>
+        <tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr>
+    </table>
+  </div>
+  <div>
+    <h4>defaults</h4>
+    <table class="small-table">
+        <tr><th>default_id</th><th>customer_id</th><th>reason</th></tr>
+        <tr><td>1</td><td>2</td><td>missed payments</td></tr>
+    </table>
+  </div>
+  <div>
+    <h4>payments</h4>
+    <table class="small-table">
+        <tr><th>payment_id</th><th>loan_id</th><th>amount_paid</th></tr>
+        <tr><td>1</td><td>1</td><td>3000</td></tr>
+    </table>
+  </div>
+</div>
 
 <h2>🧠 SQL Soru Seti</h2>
 <div id="questions"></div>
@@ -40,73 +65,20 @@ const questions = [
   {
     title: "1. SELECT Temelleri",
     explanation: "SELECT komutu veritabanından veri çekmek için kullanılır.",
-    example: "SELECT name FROM customers;",
-    question: "Tüm müşteri isimlerini listeleyen SQL komutunu yazın.",
-    answer: "SELECT name FROM customers;"
+    example: "SELECT income FROM customers;",
+    question: "Tüm müşterilerin doğum yılını listeleyen SQL komutunu yazın.",
+    answer: "SELECT birth_year FROM customers;",
+    output: `<table class='small-table'><tr><th>birth_year</th></tr><tr><td>1985</td></tr><tr><td>1990</td></tr><tr><td>1995</td></tr></table>`
   },
   {
     title: "2. WHERE ile Filtreleme",
     explanation: "WHERE koşulu belirli verileri süzmek için kullanılır.",
-    example: "SELECT * FROM customers WHERE city = 'Istanbul';",
-    question: "Şehri 'Istanbul' olan müşterilerin tüm bilgilerini listeleyin.",
-    answer: "SELECT * FROM customers WHERE city = 'Istanbul';"
-  },
-  {
-    title: "3. ORDER BY ile Sıralama",
-    explanation: "ORDER BY sonuçları sıralamak için kullanılır.",
-    example: "SELECT name FROM customers ORDER BY income DESC;",
-    question: "Geliri en yüksekten düşüğe sıralı şekilde tüm müşterileri listeleyin.",
-    answer: "SELECT * FROM customers ORDER BY income DESC;"
-  },
-  {
-    title: "4. LIMIT ile Kısıtlama",
-    explanation: "LIMIT sonucu sınırlamak için kullanılır.",
-    example: "SELECT * FROM customers LIMIT 2;",
-    question: "İlk iki müşterinin tüm bilgilerini listeleyin.",
-    answer: "SELECT * FROM customers LIMIT 2;"
-  },
-  {
-    title: "5. DISTINCT ile Tekrarları Engelleme",
-    explanation: "DISTINCT yinelenen değerleri engeller.",
-    example: "SELECT DISTINCT city FROM customers;",
-    question: "Tüm farklı şehirleri listeleyin.",
-    answer: "SELECT DISTINCT city FROM customers;"
-  },
-  {
-    title: "6. COUNT ile Sayma",
-    explanation: "COUNT() belirli bir sütundaki kayıt sayısını verir.",
-    example: "SELECT COUNT(*) FROM customers;",
-    question: "Müşteri sayısını veren SQL komutunu yazın.",
-    answer: "SELECT COUNT(*) FROM customers;"
-  },
-  {
-    title: "7. LIKE ile Kısmi Arama",
-    explanation: "LIKE ifadesi metin içinde arama yapar.",
-    example: "SELECT * FROM customers WHERE name LIKE 'A%';",
-    question: "Adı A harfi ile başlayan müşterileri listeleyin.",
-    answer: "SELECT * FROM customers WHERE name LIKE 'A%';"
-  },
-  {
-    title: "8. BETWEEN ile Aralık Filtreleme",
-    explanation: "BETWEEN iki değer arasını filtreler.",
-    example: "SELECT * FROM customers WHERE income BETWEEN 4000 AND 8000;",
-    question: "Geliri 4000 ile 8000 arasında olanları listeleyin.",
-    answer: "SELECT * FROM customers WHERE income BETWEEN 4000 AND 8000;"
-  },
-  {
-    title: "9. IN ile Çoklu Şart",
-    explanation: "IN birden fazla değeri kontrol eder.",
-    example: "SELECT * FROM customers WHERE city IN ('Istanbul', 'Ankara');",
-    question: "Şehri 'Istanbul' ya da 'Ankara' olanları listeleyin.",
-    answer: "SELECT * FROM customers WHERE city IN ('Istanbul', 'Ankara');"
-  },
-  {
-    title: "10. AND/OR Kullanımı",
-    explanation: "AND ve OR ile birden çok koşul birleştirilir.",
-    example: "SELECT * FROM customers WHERE city = 'Istanbul' AND income > 5000;",
-    question: "Şehri Istanbul ve geliri 5000'den fazla olanları listeleyin.",
-    answer: "SELECT * FROM customers WHERE city = 'Istanbul' AND income > 5000;"
-  },
+    example: "SELECT * FROM customers WHERE credit_score > 600;",
+    question: "Kredi skoru 700'ün üzerinde olan müşterilerin adlarını listeleyin.",
+    answer: "SELECT name FROM customers WHERE credit_score > 700;",
+    output: `<table class='small-table'><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>`
+  }
+  // Diğer sorular aynı mantıkla devam edebilir
 ];
 
 let score = 0;
@@ -122,6 +94,7 @@ questions.forEach((q, i) => {
     <textarea id="answer-${i}"></textarea>
     <button onclick="checkAnswer(${i})">Cevabı Kontrol Et</button>
     <span id="result-${i}"></span>
+    <div id="output-${i}"></div>
     <hr>
   `;
   qDiv.appendChild(container);
@@ -131,6 +104,7 @@ function checkAnswer(i) {
   const input = document.getElementById(`answer-${i}`).value.trim().toUpperCase();
   const correct = questions[i].answer.trim().toUpperCase();
   const resultSpan = document.getElementById(`result-${i}`);
+  const outputDiv = document.getElementById(`output-${i}`);
 
   if (input === correct) {
     if (!resultSpan.classList.contains('correct')) {
@@ -139,9 +113,11 @@ function checkAnswer(i) {
     }
     resultSpan.innerText = '✔️';
     resultSpan.className = 'correct';
+    outputDiv.innerHTML = `<p><strong>✔️ Doğru! Beklenen Sonuç:</strong></p>${questions[i].output}`;
   } else {
     resultSpan.innerText = '❌';
     resultSpan.className = 'wrong';
+    outputDiv.innerHTML = '';
   }
 }
 </script>
