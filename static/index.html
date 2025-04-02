@@ -19,6 +19,10 @@
       --border: #444;
       --primary: #00b894;
     }
+    .table-scroll {
+      overflow-x: auto;
+      max-width: 100%;
+    }
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -139,12 +143,14 @@
   <h2>📁 Tablolar</h2>
 
   <h4>customers</h4>
-  <table class="small-table">
-    <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr>
-    <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr>
-    <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr>
-    <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr>
-  </table>
+  <div class="table-scroll">
+    <table class="small-table">
+      <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr>
+      <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr>
+      <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr>
+      <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr>
+    </table>
+  </div> 
 
   <h4>loans</h4>
   <table class="small-table">
