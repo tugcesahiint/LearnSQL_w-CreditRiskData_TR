@@ -1,12 +1,10 @@
-import http.server
-import socketserver
-import urllib.parse
+from flask import Flask, render_template_string, request
 import sqlite3
 import os
 
-PORT = int(os.environ.get("PORT", 5000))
-DATABASE = 'bank_data.db'
+app = Flask(__name__)
 
+# Her soru için içerik burada tutulabilir veya bir JSON dosyasından yüklenebilir
 tutorials = {
     1: {
         'title': 'SELECT Komutu',
@@ -16,6 +14,9 @@ tutorials = {
         'answer_explanation': 'SELECT * ifadesi, tablodaki tüm sütunları ve satırları getirir.'
     }
 }
+
+# SQLite veritabanı bağlantısı
+DATABASE = 'bank_data.db'
 
 def execute_sql(sql):
     try:
@@ -29,63 +30,60 @@ def execute_sql(sql):
     except Exception as e:
         return {'columns': [], 'rows': [], 'error': str(e)}
 
-class MyHandler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        content = tutorials[1]
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(self.build_page(content, '', None).encode("utf-8"))
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/soru/<int:id>', methods=['GET', 'POST'])
+def soru(id=1):
+    content = tutorials.get(id)
+    result = None
+    user_sql = ''
 
-    def do_POST(self):
-        length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(length)
-        fields = urllib.parse.parse_qs(post_data.decode('utf-8'))
-        user_sql = fields.get('sql', [''])[0]
+    if request.method == 'POST':
+        user_sql = request.form['sql']
         result = execute_sql(user_sql)
-        content = tutorials[1]
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(self.build_page(content, user_sql, result).encode("utf-8"))
 
-    def build_page(self, content, user_sql, result):
-        html = f"""
+    return render_template_string('''
         <html>
         <head>
-            <title>SQL Öğren - Soru 1</title>
+            <title>SQL Öğren - Soru {{ id }}</title>
         </head>
         <body>
-            <h1>{content['title']}</h1>
-            <p>{content['description']}</p>
+            <h1>{{ content.title }}</h1>
+            <p>{{ content.description }}</p>
             <h3>Soru:</h3>
-            <p>{content['question']}</p>
-            <form method="POST">
-                <textarea name="sql" rows="5" cols="80">{user_sql}</textarea><br>
+            <p>{{ content.question }}</p>
+
+            <form method="post">
+                <textarea name="sql" rows="5" cols="80">{{ user_sql }}</textarea><br>
                 <input type="submit" value="Çalıştır">
             </form>
-        """
-        if result:
-            if result['error']:
-                html += f"<p style='color:red'>Hata: {result['error']}</p>"
-            else:
-                html += "<h3>Sonuç:</h3><table border='1'><tr>"
-                html += ''.join([f"<th>{col}</th>" for col in result['columns']])
-                html += "</tr>"
-                for row in result['rows']:
-                    html += "<tr>" + ''.join([f"<td>{cell}</td>" for cell in row]) + "</tr>"
-                html += "</table>"
 
-        html += f"""
+            {% if result %}
+                {% if result.error %}
+                    <p style="color:red">Hata: {{ result.error }}</p>
+                {% else %}
+                    <h3>Sonuç:</h3>
+                    <table border="1">
+                        <tr>
+                            {% for col in result.columns %}<th>{{ col }}</th>{% endfor %}
+                        </tr>
+                        {% for row in result.rows %}
+                            <tr>
+                                {% for cell in row %}<td>{{ cell }}</td>{% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            {% endif %}
+
             <hr>
             <h3>Doğru Cevap:</h3>
-            <pre>{content['answer_sql']}</pre>
-            <p>{content['answer_explanation']}</p>
+            <pre>{{ content.answer_sql }}</pre>
+            <p>{{ content.answer_explanation }}</p>
         </body>
         </html>
-        """
-        return html
+    ''', id=id, content=content, result=result, user_sql=user_sql)
 
-with socketserver.TCPServer(("0.0.0.0", PORT), MyHandler) as httpd:
-    print(f"Serving on port {PORT}...")
-    httpd.serve_forever()
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
+
