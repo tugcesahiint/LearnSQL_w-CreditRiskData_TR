@@ -61,6 +61,16 @@
       background-color: var(--primary);
       color: white;
     }
+    .code-block {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
     textarea {
       width: 100%;
       padding: 8px;
@@ -284,7 +294,8 @@ questions.forEach((q, i) => {
   container.innerHTML = `
     <h3>${q.title}</h3>
     <p><strong>Konu:</strong> ${q.explanation}</p>
-    <p><strong>Örnek:</strong> <code>${q.example}</code></p>
+    <p><strong>Örnek:</strong></p>
+    <pre class="code-block">${q.example}</pre>
     <p><strong>Soru:</strong> ${q.question}</p>
     <textarea id="answer-${i}"></textarea>
     <button onclick="checkAnswer(${i})">Cevabı Kontrol Et</button>
