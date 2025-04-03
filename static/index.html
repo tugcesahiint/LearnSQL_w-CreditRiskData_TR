@@ -17,6 +17,12 @@
       margin: 0; display: flex; font-family: 'Segoe UI', sans-serif;
       background: var(--bg); color: var(--text);
     }
+    .level-buttons button.active {
+      background-color: var(--primary);
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+    }
     .sidebar {
       width: 30%; background: var(--box); padding: 20px;
       border-right: 1px solid var(--border); height: 100vh;
@@ -138,9 +144,9 @@
   <div class="sticky-top">
     <div class="header">📊 SQL Öğrenme Platformu</div>
     <div class="level-buttons">
-      <button onclick="loadLevel('temel')">🟢 Temel</button>
-      <button onclick="loadLevel('orta')">🟡 Orta</button>
-      <button onclick="loadLevel('ileri')">🔴 İleri</button>
+      <button onclick="loadLevel('temel', this)">🟢 Temel</button>
+      <button onclick="loadLevel('orta', this)">🟡 Orta</button>
+      <button onclick="loadLevel('ileri', this)">🔴 İleri</button>
     </div>
     <div class="score">✅ Doğru Sayısı: <span id="score">0</span></div>
   </div>
@@ -366,11 +372,16 @@ const allQuestions = {
 
 let score = 0;
 
-function loadLevel(level) {
+function loadLevel(level, buttonEl = null) {
   const qDiv = document.getElementById("questions");
   qDiv.innerHTML = "";
   score = 0;
   document.getElementById("score").innerText = score;
+
+  // Aktif butonu vurgula
+  const allButtons = document.querySelectorAll('.level-buttons button');
+  allButtons.forEach(btn => btn.classList.remove('active'));
+  if (buttonEl) buttonEl.classList.add('active');
 
   const questions = allQuestions[level];
 
@@ -391,6 +402,7 @@ function loadLevel(level) {
     qDiv.appendChild(container);
   });
 }
+
 
 function checkAnswer(level, i) {
   const input = document.getElementById(`answer-${i}`).value.trim().toUpperCase();
