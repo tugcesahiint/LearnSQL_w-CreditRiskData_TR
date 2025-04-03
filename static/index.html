@@ -148,6 +148,31 @@
 </div>
 
 <script>
+
+<div style="background-color:#f1f1f1; padding: 20px; border-bottom: 1px solid #ccc; font-family: 'Segoe UI', sans-serif;">
+  <h2>👋 Selam! Ben Tuğçe</h2>
+  <p>
+    SQL öğrenirken özellikle <strong>bankacılık verileriyle</strong> hazırlanmış pratik ve Türkçe bir kaynak bulmakta zorlandım.  
+    Bu yüzden <strong>"SQL Öğren - Bankacılık Uygulamalı"</strong> adlı bu projeyi hazırladım.  
+  </p>
+  <p>
+    Burada <strong>temel seviye SQL konularını</strong> (SELECT, WHERE, ORDER BY, JOIN...) sade bir anlatımla öğrenebilir,  
+    her konuyu <strong>örnekler ve uygulamalı sorularla</strong> hemen pekiştirebilirsiniz.
+  </p>
+  <p>
+    💡 Uygulamalı sorular kısmı, yazdığınız SQL komutlarında <strong>yazım yanlışlarına oldukça duyarlıdır</strong>.  
+    Bu özelliği ilerleyen versiyonlarda daha esnek ve akıllı hale getirmeyi planlıyorum.
+  </p>
+  <p>
+    Konular 3 seviyeye ayrıldı: <strong>Temel</strong> 🟢, <strong>Orta</strong> 🟡 ve <strong>İleri</strong> 🔴  
+    Dilersen seviyeni seçerek en uygun yerden başlayabilirsin!
+  </p>
+  <p style="margin-top: 10px;">
+    Umarım hem öğretici hem de ilham verici olur. 💻✨  
+    Her türlü görüş ve destek için bana <a href="https://www.linkedin.com/in/tugcesahin" target="_blank" style="color:#3498db; font-weight:bold;">LinkedIn</a> üzerinden ulaşabilirsin.  
+  </p>
+</div>
+  
 const allQuestions = {
   "temel": [
    {
@@ -301,15 +326,7 @@ const allQuestions = {
   "question": "alias kullanarak müşteri adları ve kredi durumunu listeleyin.",
   "answer": "SELECT c.name, l.status FROM customers AS c JOIN loans AS l ON c.customer_id = l.customer_id;",
   "output": "<table><tr><th>name</th><th>status</th></tr><tr><td>Ahmet Yilmaz</td><td>paid</td></tr><tr><td>Ayse Demir</td><td>unpaid</td></tr></table>"
-},
-  {
-    "title": "5. LIMIT ile Veri Sayısını Sınırlama",
-    "explanation": "`LIMIT`, sonuç kümesinden kaç tane satır görüntüleneceğini belirler. İlk birkaç veriyi görmek için sıklıkla kullanılır.",
-    "example": "SELECT * FROM customers LIMIT 3;",
-    "question": "customers tablosundaki ilk 3 müşteriyi listeleyin.",
-    "answer": "SELECT * FROM customers LIMIT 3;",
-    "output": "<table><tr><th>name</th></tr><tr><td>Ahmet Yilmaz</td></tr><tr><td>Ayse Demir</td></tr><tr><td>Can Kaya</td></tr></table>"
-  }
+}
 ],
   "orta": [
     {
