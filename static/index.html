@@ -141,13 +141,21 @@
 const allQuestions = {
   "temel": [
    {
-    "title": "1. SELECT ile Veri Çekme",
-    "explanation": "`SELECT` komutu, SQL'de en temel komuttur ve veritabanındaki tablolardan bilgi çekmek için kullanılır. Tüm sütunları almak için `*` kullanılır. Belirli sütunlar çekilmek istenirse, sütun adları virgülle ayrılarak yazılır.",
-    "example": "SELECT * FROM customers;\nSELECT name, city FROM customers;",
-    "question": "customers tablosundan tüm sütunları getirin.",
-    "answer": "SELECT * FROM customers;",
-    "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr></table>"
-  },
+  "title": "1.1. SELECT * ile Tüm Verileri Çekmek",
+  "explanation": "`SELECT *` ifadesi, bir tablodaki tüm sütunları ve satırları getirir. Eğer hangi sütunları alacağını bilmiyorsan ya da tüm bilgileri görmek istiyorsan bu kullanılır.",
+  "example": "SELECT * FROM loans;",
+  "question": "loans tablosundaki tüm sütunları ve satırları listeleyin.",
+  "answer": "SELECT * FROM loans;",
+  "output": "<table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>interest_rate</th><th>status</th><th>start_date</th><th>due_date</th><th>risk_level</th></tr><tr><td>1</td><td>1</td><td>10000.00</td><td>18.50</td><td>paid</td><td>2023-01-10</td><td>2023-07-10</td><td>medium</td></tr></table>"
+},
+  {
+  "title": "1.2. SELECT ile Belirli Sütunları Seçmek",
+  "explanation": "`SELECT sütun1, sütun2` şeklinde kullanarak sadece ilgilendiğiniz sütunları çekebilirsiniz. Bu yöntem veriyi sadeleştirir ve daha okunabilir hale getirir.",
+  "example": "SELECT loan_id, amount FROM loans;",
+  "question": "loans tablosundan sadece kredi numarası (loan_id) ve tutar (amount) bilgilerini çekin.",
+  "answer": "SELECT loan_id, amount FROM loans;",
+  "output": "<table><tr><th>loan_id</th><th>amount</th></tr><tr><td>1</td><td>10000.00</td></tr></table>"
+},  
   {
     "title": "2. FROM ile Tablo Seçme",
     "explanation": "`FROM`, verinin hangi tablodan alınacağını belirtir. Her `SELECT` komutunun `FROM` ile birlikte bir tabloya yöneltilmesi gerekir.",
