@@ -148,34 +148,17 @@
 </div>
 
 <script>
-
-<div style="background-color:#f1f1f1; padding: 20px; border-bottom: 1px solid #ccc; font-family: 'Segoe UI', sans-serif;">
-  <h2>👋 Selam! Ben Tuğçe</h2>
-  <p>
-    SQL öğrenirken özellikle <strong>bankacılık verileriyle</strong> hazırlanmış pratik ve Türkçe bir kaynak bulmakta zorlandım.  
-    Bu yüzden <strong>"SQL Öğren - Bankacılık Uygulamalı"</strong> adlı bu projeyi hazırladım.  
-  </p>
-  <p>
-    Burada <strong>temel seviye SQL konularını</strong> (SELECT, WHERE, ORDER BY, JOIN...) sade bir anlatımla öğrenebilir,  
-    her konuyu <strong>örnekler ve uygulamalı sorularla</strong> hemen pekiştirebilirsiniz.
-  </p>
-  <p>
-    💡 Uygulamalı sorular kısmı, yazdığınız SQL komutlarında <strong>yazım yanlışlarına oldukça duyarlıdır</strong>.  
-    Bu özelliği ilerleyen versiyonlarda daha esnek ve akıllı hale getirmeyi planlıyorum.
-  </p>
-  <p>
-    Konular 3 seviyeye ayrıldı: <strong>Temel</strong> 🟢, <strong>Orta</strong> 🟡 ve <strong>İleri</strong> 🔴  
-    Dilersen seviyeni seçerek en uygun yerden başlayabilirsin!
-  </p>
-  <p style="margin-top: 10px;">
-    Umarım hem öğretici hem de ilham verici olur. 💻✨  
-    Her türlü görüş ve destek için bana <a href="https://www.linkedin.com/in/tugcesahin" target="_blank" style="color:#3498db; font-weight:bold;">LinkedIn</a> üzerinden ulaşabilirsin.  
-  </p>
-</div>
-  
 const allQuestions = {
   "temel": [
-   {
+    {
+  "title": "🎓 Hoş Geldiniz!",
+  "explanation": "Bu proje, SQL'i uygulamalı ve tamamen Türkçe olarak öğrenebilmeniz için hazırlandı. İçerikte bankacılık verileri kullanılarak SELECT, WHERE, JOIN gibi konuların mantığını hem örneklerle hem de interaktif sorularla pekiştirebilirsiniz. Özellikle yeni başlayanlar için tasarlandı.",
+  "example": "SELECT * FROM customers;\n-- Tablodaki tüm veriyi görmek için kullanılır.",
+  "question": "Hazırsanız başlayalım! Aşağıdan bir seviye seçin ve öğrenmeye geçin. Sorulara başlamadan önce not: Yazdığınız SQL komutları harfiyen kontrol edilir. Küçük yazım farkları bile sonucu etkileyebilir. Bu özelliği ileride daha esnek hale getirmeyi planlıyorum.",
+  "answer": "",
+  "output": "<p><strong>📩 Geri bildirim ya da iş birliği için:</strong> <a href='https://www.linkedin.com/in/tugcesahin' target='_blank'>LinkedIn'den ulaşabilirsiniz</a></p>"
+},
+    {
   "title": "1.1. SELECT * ile Tüm Sütunları Çekme",
   "explanation": "`SELECT *` komutu, bir tablodaki tüm sütunları ve satırları getirir. Tablonun yapısını tanımak veya tüm veriyi görmek istediğimizde kullanılır.",
   "example": "SELECT * FROM customers; -- Bu sorgu customers tablosundaki tüm satır ve sütunları getirir.",
