@@ -322,55 +322,183 @@ const allQuestions = {
 ],
   "orta": [
     {
-      "title": "1. JOIN ile Tablo Birle\u015ftirme",
-      "explanation": "`JOIN`, iki tabloyu ortak s\u00fctun \u00fczerinden birle\u015ftirmek i\u00e7in kullan\u0131l\u0131r. `INNER JOIN` yaln\u0131zca e\u015fle\u015fen kay\u0131tlar\u0131 getirir.",
-      "example": "SELECT name, amount FROM customers JOIN loans ON customers.customer_id = loans.customer_id;",
-      "question": "customers ve loans tablolar\u0131n\u0131 birle\u015ftirip m\u00fc\u015fteri adlar\u0131n\u0131 ve kredi miktarlar\u0131n\u0131 listeleyin.",
-      "answer": "SELECT name, amount FROM customers JOIN loans ON customers.customer_id = loans.customer_id;",
-      "output": "<table><tr><th>name</th><th>amount</th></tr><tr><td>Ahmet Yilmaz</td><td>10000</td></tr><tr><td>Ayse Demir</td><td>15000</td></tr></table>"
-    },
+  "title": "1.1. INNER JOIN ile Tablo Birleştirme",
+  "explanation": "`INNER JOIN`, iki tabloyu ortak bir sütuna göre birleştirir ve sadece eşleşen satırları getirir.",
+  "example": "SELECT name, amount FROM customers JOIN loans ON customers.customer_id = loans.customer_id;",
+  "question": "payment yapılan krediler için müşteri adını ve ödeme tutarını gösterin.",
+  "answer": "SELECT name, amount_paid FROM customers JOIN loans ON customers.customer_id = loans.customer_id JOIN payments ON loans.loan_id = payments.loan_id;",
+  "output": "<table><tr><th>name</th><th>amount_paid</th></tr><tr><td>Ahmet Yilmaz</td><td>3000</td></tr></table>"
+},
     {
-      "title": "2. GROUP BY ile Gruplama",
-      "explanation": "`GROUP BY` ile belirli bir s\u00fctuna g\u00f6re verileri gruplayabiliriz. Genellikle COUNT, SUM gibi fonksiyonlarla birlikte kullan\u0131l\u0131r.",
-      "example": "SELECT city, COUNT(*) FROM customers GROUP BY city;",
-      "question": "Her \u015fehirde ka\u00e7 m\u00fc\u015fteri oldu\u011funu listeleyin.",
-      "answer": "SELECT city, COUNT(*) FROM customers GROUP BY city;",
-      "output": "<table><tr><th>city</th><th>COUNT(*)</th></tr><tr><td>Istanbul</td><td>1</td></tr><tr><td>Ankara</td><td>1</td></tr><tr><td>Izmir</td><td>1</td></tr></table>"
-    },
+  "title": "1.2. LEFT JOIN ile Eşleşmeyen Verileri Dahil Etme",
+  "explanation": "`LEFT JOIN`, sol tablodaki tüm satırları getirir. Sağdaki tablo ile eşleşme olmazsa, eksik değerler NULL olarak döner.",
+  "example": "SELECT name, reason FROM customers LEFT JOIN defaults ON customers.customer_id = defaults.customer_id;",
+  "question": "defaults tablosundaki verileri, müşterilerle birleştirerek gösterin. Eşleşmeyen müşteri olursa da gösterilsin.",
+  "answer": "SELECT d.customer_id, name FROM defaults d LEFT JOIN customers c ON d.customer_id = c.customer_id;",
+  "output": "<table><tr><th>customer_id</th><th>name</th></tr><tr><td>2</td><td>Ayse Demir</td></tr></table>"
+},
     {
-      "title": "3. IN, BETWEEN, LIKE ile Geli\u015fmi\u015f Filtreleme",
-      "explanation": "`IN` belirli bir listede olanlar\u0131 se\u00e7er. `BETWEEN` iki de\u011fer aras\u0131 i\u00e7in kullan\u0131l\u0131r. `LIKE` benzer metinleri e\u015fle\u015ftirir.",
-      "example": "SELECT * FROM customers WHERE name LIKE 'A%';",
-      "question": "Ad\u0131 'A' harfiyle ba\u015flayan m\u00fc\u015fterileri listeleyin.",
-      "answer": "SELECT name FROM customers WHERE name LIKE 'A%';",
-      "output": "<table><tr><th>name</th></tr><tr><td>Ahmet Yilmaz</td></tr><tr><td>Ayse Demir</td></tr></table>"
-    }
+  "title": "1.3. JOIN Kullanırken Alias (Takma Ad) Kullanımı",
+  "explanation": "`AS` ile tablolara kısa takma adlar (alias) vererek okunabilirliği artırabiliriz. `c.name`, `l.amount` gibi yazmak daha kısa ve temiz olur.",
+  "example": "SELECT c.name, l.amount FROM customers AS c JOIN loans AS l ON c.customer_id = l.customer_id;",
+  "question": "alias kullanarak müşteri adları ve kredi durumunu listeleyin.",
+  "answer": "SELECT c.name, l.status FROM customers AS c JOIN loans AS l ON c.customer_id = l.customer_id;",
+  "output": "<table><tr><th>name</th><th>status</th></tr><tr><td>Ahmet Yilmaz</td><td>paid</td></tr><tr><td>Ayse Demir</td><td>unpaid</td></tr></table>"
+},
+  {
+  "title": "1.4. FULL OUTER JOIN ile Tüm Verileri Getirmek",
+  "explanation": "`FULL OUTER JOIN`, iki tablodan da eşleşen ve eşleşmeyen tüm verileri getirir. Her iki tarafta da eşleşmeyen veriler varsa onlar da `NULL` olarak gösterilir.",
+  "example": "SELECT c.name, d.reason FROM customers c FULL OUTER JOIN defaults d ON c.customer_id = d.customer_id;",
+  "question": "customers ve defaults tablolarını `FULL OUTER JOIN` ile birleştirerek müşteri adlarını ve varsa neden (reason) bilgisini gösterin.",
+  "answer": "SELECT c.name, d.reason FROM customers c FULL OUTER JOIN defaults d ON c.customer_id = d.customer_id;",
+  "output": "<table><tr><th>name</th><th>reason</th></tr><tr><td>Ahmet Yilmaz</td><td>null</td></tr><tr><td>Ayse Demir</td><td>missed payments</td></tr><tr><td>Can Kaya</td><td>null</td></tr></table>"
+},
+    {
+  "title": "1.5. CROSS JOIN ile Tüm Kombinasyonları Getirmek",
+  "explanation": "`CROSS JOIN`, iki tabloyu her satırı diğer her satırla birleştirerek tüm kombinasyonları üretir. Özellikle ihtimalleri listelemek veya tüm eşleşmeleri görmek için kullanılır.",
+  "example": "SELECT c.name, l.amount FROM customers c CROSS JOIN loans l;",
+  "question": "customers ve loans tablolarını `CROSS JOIN` ile birleştirip müşteri adları ve tüm kredi tutarlarını kombinasyon şeklinde listeleyin.",
+  "answer": "SELECT c.name, l.amount FROM customers c CROSS JOIN loans l;",
+  "output": "<table><tr><th>name</th><th>amount</th></tr><tr><td>Ahmet Yilmaz</td><td>10000</td></tr><tr><td>Ahmet Yilmaz</td><td>15000</td></tr><tr><td>Ayse Demir</td><td>10000</td></tr><tr><td>Ayse Demir</td><td>15000</td></tr><tr><td>Can Kaya</td><td>10000</td></tr><tr><td>Can Kaya</td><td>15000</td></tr></table>"
+},
+    {
+  "title": "1.6. SELF JOIN ile Aynı Tabloyu Kendiyle Eşleştirme",
+  "explanation": "`SELF JOIN`, bir tablodaki satırları aynı tablodaki diğer satırlarla karşılaştırmak için kullanılır. Aynı tabloya farklı takma adlar (alias) vererek kullanılır.",
+  "example": "SELECT c1.name AS kisi1, c2.name AS kisi2 FROM customers c1 JOIN customers c2 ON c1.city = c2.city;",
+  "question": "Aynı şehirde yaşayan müşteri çiftlerini listeleyin. (Kendisiyle eşleşen satırlar da gelir.)",
+  "answer": "SELECT c1.name AS kisi1, c2.name AS kisi2 FROM customers c1 JOIN customers c2 ON c1.city = c2.city;",
+  "output": "<table><tr><th>kisi1</th><th>kisi2</th></tr><tr><td>Ahmet Yilmaz</td><td>Ahmet Yilmaz</td></tr><tr><td>Ayse Demir</td><td>Ayse Demir</td></tr><tr><td>Can Kaya</td><td>Can Kaya</td></tr></table>"
+},
+   {
+  "title": "3.1. Artan Sıralama: ORDER BY ASC",
+  "explanation": "`ORDER BY sütun ASC` ifadesi, verileri belirli bir sütuna göre küçükten büyüğe sıralamak için kullanılır. ASC yazılmasa bile varsayılan sıralama zaten artandır.",
+  "example": "SELECT name FROM customers ORDER BY income ASC; -- Gelire göre artan sıralama.",
+  "question": "Kredi skoru düşükten yükseğe doğru sıralanmış müşteri listesini alın.",
+  "answer": "SELECT * FROM customers ORDER BY credit_score ASC;",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr><tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr></table>"
+},
+{
+  "title": "2.2. Azalan Sıralama: ORDER BY DESC",
+  "explanation": "`ORDER BY sütun DESC` ifadesi, verileri büyükten küçüğe sıralar. Özellikle en yüksek geliri veya en büyük kredi tutarını bulmak için kullanılır.",
+  "example": "SELECT amount FROM loans ORDER BY amount DESC; -- En büyük krediden küçüğe doğru sıralar.",
+  "question": "Geliri en yüksek müşteriden en düşüğe doğru sıralayın.",
+  "answer": "SELECT * FROM customers ORDER BY income DESC;",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr><tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr></table>"
+},
+{
+  "title": "2.3. Çoklu Sıralama: ORDER BY sütun1, sütun2",
+  "explanation": "`ORDER BY sütun1, sütun2` kullanıldığında önce birinci sütuna göre sıralama yapılır. Eğer bu sütunda eşitlik varsa, ikinci sütun dikkate alınır.",
+  "example": "SELECT * FROM customers ORDER BY city, income DESC; -- Önce şehir adına göre, sonra gelire göre azalan sırayla.",
+  "question": "Müşterileri doğum yılına göre artan, aynı yılda doğanları da kredi skoruna göre azalan sırayla sıralayın.",
+  "answer": "SELECT * FROM customers ORDER BY birth_year ASC, credit_score DESC;",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr><tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr><tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr></table>"
+},
+{
+  "title": "2.4. ORDER BY ile LIMIT Kullanımı",
+  "explanation": "`ORDER BY` ile sıralama yaparken `LIMIT` komutu kullanılarak sadece ilk n kayıt alınabilir. Örneğin en yüksek borçlu müşteri bulunabilir.",
+  "example": "SELECT * FROM loans ORDER BY amount DESC LIMIT 1; -- En yüksek kredi tutarını çeken müşteri",
+  "question": "En düşük kredi skoru olan ilk müşteriyi listeleyin.",
+  "answer": "SELECT * FROM customers ORDER BY credit_score ASC LIMIT 1;",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr></table>"
+},
+    {
+  "title": "3.1. HAVING ile Gruplanmış Verileri Filtrelemek",
+  "explanation": "`HAVING`, `GROUP BY` ile gruplanmış veriler üzerinde koşul belirtmek için kullanılır. `WHERE` gibi çalışır ancak özet (aggregate) fonksiyonlarla birlikte kullanılır.",
+  "example": "SELECT city, COUNT(*) FROM customers GROUP BY city HAVING COUNT(*) > 1;",
+  "question": "Hangi şehirde 1'den fazla müşteri varsa şehir adını ve müşteri sayısını listeleyin.",
+  "answer": "SELECT city, COUNT(*) FROM customers GROUP BY city HAVING COUNT(*) > 1;",
+  "output": "<table><tr><th>city</th><th>COUNT(*)</th></tr></table>"
+},
+{
+  "title": "3.2. Gruplarda Ortalama ile Filtreleme (AVG + HAVING)",
+  "explanation": "`AVG()` fonksiyonu ortalama hesaplar. `HAVING` ile birlikte kullanarak, grupların ortalama değerlerine göre filtreleme yapılabilir.",
+  "example": "SELECT city, AVG(income) FROM customers GROUP BY city HAVING AVG(income) > 4000;",
+  "question": "Ortalama geliri 4000 TL'nin üzerinde olan şehirleri ve ortalama gelirlerini listeleyin.",
+  "answer": "SELECT city, AVG(income) FROM customers GROUP BY city HAVING AVG(income) > 4000;",
+  "output": "<table><tr><th>city</th><th>AVG(income)</th></tr><tr><td>Ankara</td><td>8000.0</td></tr><tr><td>Istanbul</td><td>5000.0</td></tr></table>"
+},
+{
+  "title": "3.3. IN ile Çoklu Değeri Filtrelemek",
+  "explanation": "`IN` ifadesi, bir sütunun belirli değerlerden herhangi birine eşit olup olmadığını kontrol eder.",
+  "example": "SELECT * FROM customers WHERE city IN ('Ankara', 'Izmir');",
+  "question": "Şehri Ankara veya Izmir olan müşterilerin tüm bilgilerini listeleyin.",
+  "answer": "SELECT * FROM customers WHERE city IN ('Ankara', 'Izmir');",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr><tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr></table>"
+},
+{
+  "title": "3.4. BETWEEN ile Aralık Filtreleme",
+  "explanation": "`BETWEEN x AND y`, belirli bir aralıkta kalan değerleri filtreler. Sayısal, tarihsel veya alfabetik değerlerde kullanılabilir.",
+  "example": "SELECT name FROM customers WHERE income BETWEEN 4000 AND 7000;",
+  "question": "Geliri 4000 ile 7000 arasında olan müşterileri listeleyin.",
+  "answer": "SELECT * FROM customers WHERE income BETWEEN 4000 AND 7000;",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr></table>"
+},
+{
+  "title": "3.5. LIKE ile Benzer Metinleri Aramak",
+  "explanation": "`LIKE`, bir sütundaki verinin belirli bir desenle eşleşip eşleşmediğini kontrol eder. `%` ifadesi joker karakterdir.",
+  "example": "SELECT name FROM customers WHERE name LIKE 'A%';",
+  "question": "Adı 'A' harfiyle başlayan müşterileri listeleyin.",
+  "answer": "SELECT * FROM customers WHERE name LIKE 'A%';",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr><tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr></table>"
+},
+{
+  "title": "3.6. Subquery (Alt Sorgu) ile Filtreleme",
+  "explanation": "Alt sorgular, başka bir sorgunun içinde yazılan sorgulardır. Genellikle `WHERE`, `IN`, `EXISTS` gibi ifadelerde kullanılır.",
+  "example": "SELECT name FROM customers WHERE customer_id IN (SELECT customer_id FROM loans WHERE status = 'unpaid');",
+  "question": "Ödenmemiş kredisi (status = 'unpaid') olan müşterilerin adlarını listeleyin.",
+  "answer": "SELECT name FROM customers WHERE customer_id IN (SELECT customer_id FROM loans WHERE status = 'unpaid');",
+  "output": "<table><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>"
+},
   ],
   "ileri": [
+   {
+  "title": "1. EXISTS ile Alt Sorgu ile Filtreleme",
+  "explanation": "`EXISTS`, alt sorguda eşleşen en az bir kayıt varsa `TRUE` döner. Genellikle dıştaki sorguda bir koşul sağlanıp sağlanmadığını kontrol etmek için kullanılır.",
+  "example": "SELECT name FROM customers WHERE EXISTS (SELECT * FROM loans WHERE loans.customer_id = customers.customer_id);",
+  "question": "Herhangi bir kredisi olan müşterileri listeleyin.",
+  "answer": "SELECT name FROM customers WHERE EXISTS (SELECT * FROM loans WHERE loans.customer_id = customers.customer_id);",
+  "output": "<table><tr><th>name</th></tr><tr><td>Ahmet Yilmaz</td></tr><tr><td>Ayse Demir</td></tr></table>"
+},
+{
+  "title": "2. NOT EXISTS ile Eksik Kayıtları Bulma",
+  "explanation": "`NOT EXISTS`, alt sorguda eşleşen kayıt **yoksa** `TRUE` döner. Örneğin hiç kredi almamış müşterileri tespit etmekte kullanılır.",
+  "example": "SELECT name FROM customers WHERE NOT EXISTS (SELECT * FROM loans WHERE loans.customer_id = customers.customer_id);",
+  "question": "Henüz kredi almamış müşterileri listeleyin.",
+  "answer": "SELECT name FROM customers WHERE NOT EXISTS (SELECT * FROM loans WHERE loans.customer_id = customers.customer_id);",
+  "output": "<table><tr><th>name</th></tr><tr><td>Can Kaya</td></tr></table>"
+},
+{
+  "title": "3. CTE (Common Table Expression) ile Geçici Tablo Oluşturma",
+  "explanation": "`WITH` ifadesi ile geçici bir tablo oluşturulabilir. Bu yapı, karmaşık sorguları daha okunabilir ve modüler hale getirir.",
+  "example": "WITH yüksekGelir AS (SELECT * FROM customers WHERE income > 6000) SELECT name FROM yüksekGelir;",
+  "question": "Geliri 6000 TL'den yüksek olan müşterileri önce geçici bir tablo olarak tanımlayıp ardından isimlerini listeleyin.",
+  "answer": "WITH yuksekGelir AS (SELECT * FROM customers WHERE income > 6000) SELECT name FROM yuksekGelir;",
+  "output": "<table><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>"
+},
     {
-      "title": "1. WINDOW FUNCTION - ROW_NUMBER",
-      "explanation": "`ROW_NUMBER()` her sat\u0131ra s\u0131ral\u0131 bir numara verir. Genellikle bir s\u0131ralama \u00f6l\u00e7\u00fct\u00fc ile birlikte kullan\u0131l\u0131r.",
-      "example": "SELECT name, ROW_NUMBER() OVER (ORDER BY income DESC) FROM customers;",
-      "question": "Gelire g\u00f6re azalan s\u0131ralamada her m\u00fc\u015fteriye s\u0131ra numaras\u0131 verin.",
-      "answer": "SELECT name, ROW_NUMBER() OVER (ORDER BY income DESC) FROM customers;",
-      "output": "<table><tr><th>name</th><th>row_number</th></tr><tr><td>Ayse Demir</td><td>1</td></tr><tr><td>Ahmet Yilmaz</td><td>2</td></tr><tr><td>Can Kaya</td><td>3</td></tr></table>"
-    },
-    {
-      "title": "2. EXISTS ile Alt Sorgular",
-      "explanation": "`EXISTS`, alt sorguda en az bir kay\u0131t varsa `TRUE` d\u00f6ner. Belirli bir ko\u015fula ba\u011fl\u0131 kontrol sa\u011flar.",
-      "example": "SELECT name FROM customers WHERE EXISTS (SELECT * FROM loans WHERE customers.customer_id = loans.customer_id);",
-      "question": "Herhangi bir kredisi olan m\u00fc\u015fterileri listeleyin.",
-      "answer": "SELECT name FROM customers WHERE EXISTS (SELECT * FROM loans WHERE customers.customer_id = loans.customer_id);",
-      "output": "<table><tr><th>name</th></tr><tr><td>Ahmet Yilmaz</td></tr><tr><td>Ayse Demir</td></tr></table>"
-    },
-    {
-      "title": "3. CTE - Ge\u00e7ici Tablo (WITH)",
-      "explanation": "`WITH` ifadesi, ge\u00e7ici bir adland\u0131r\u0131lm\u0131\u015f tablo olu\u015fturarak okunabilirli\u011fi art\u0131r\u0131r. Karma\u015f\u0131k sorgular bu \u015fekilde sadele\u015fir.",
-      "example": "WITH high_income AS (SELECT * FROM customers WHERE income > 6000) SELECT name FROM high_income;",
-      "question": "Geliri 6000'den y\u00fcksek olanlar\u0131 WITH ifadesiyle se\u00e7ip sadece adlar\u0131n\u0131 listeleyin.",
-      "answer": "WITH high_income AS (SELECT * FROM customers WHERE income > 6000) SELECT name FROM high_income;",
-      "output": "<table><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>"
-    }
+  "title": "4. UNION ile Sorgu Sonuçlarını Birleştirme",
+  "explanation": "`UNION`, iki ayrı sorgunun sonuçlarını alt alta birleştirir. Tekil sonuçlar döndürür. Tüm sütun sayısı ve veri tipi uyumlu olmalıdır.",
+  "example": "SELECT name FROM customers WHERE city = 'Ankara' UNION SELECT name FROM customers WHERE income > 6000;",
+  "question": "Şehri 'Ankara' olan ya da geliri 6000 TL'den fazla olan müşteri isimlerini listeleyin. Aynı kişi iki kez gelmesin.",
+  "answer": "SELECT name FROM customers WHERE city = 'Ankara' UNION SELECT name FROM customers WHERE income > 6000;",
+  "output": "<table><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>"
+},
+{
+  "title": "5. CASE WHEN ile Koşullu Sütun Oluşturma",
+  "explanation": "`CASE WHEN` yapısı, bir sütun içinde koşullara göre farklı değerler üretir. Genellikle sınıflandırma, etiketleme işlemlerinde kullanılır.",
+  "example": "SELECT name, CASE WHEN credit_score >= 700 THEN 'Düşük Risk' ELSE 'Yüksek Risk' END AS risk_durumu FROM customers;",
+  "question": "Müşterileri kredi notuna göre 'Düşük Risk' (700 ve üzeri) ve 'Yüksek Risk' (700 altı) olarak sınıflandırın.",
+  "answer": "SELECT name, CASE WHEN credit_score >= 700 THEN 'Düşük Risk' ELSE 'Yüksek Risk' END AS risk_durumu FROM customers;",
+  "output": "<table><tr><th>name</th><th>risk_durumu</th></tr><tr><td>Ahmet Yilmaz</td><td>Yüksek Risk</td></tr><tr><td>Ayse Demir</td><td>Düşük Risk</td></tr><tr><td>Can Kaya</td><td>Yüksek Risk</td></tr></table>"
+},
+{
+  "title": "6. Window Function: ROW_NUMBER() ile Sıralı Numara Verme",
+  "explanation": "`ROW_NUMBER()` fonksiyonu, belirtilen sıralama ölçütüne göre her satıra bir sıra numarası verir. Genellikle raporlarda kullanılır.",
+  "example": "SELECT name, income, ROW_NUMBER() OVER (ORDER BY income DESC) AS sira FROM customers;",
+  "question": "Gelire göre en yüksekten en düşüğe doğru müşterilere sıra numarası verin.",
+  "answer": "SELECT name, income, ROW_NUMBER() OVER (ORDER BY income DESC) AS sira FROM customers;",
+  "output": "<table><tr><th>name</th><th>income</th><th>sira</th></tr><tr><td>Ayse Demir</td><td>8000</td><td>1</td></tr><tr><td>Ahmet Yilmaz</td><td>5000</td><td>2</td></tr><tr><td>Can Kaya</td><td>3000</td><td>3</td></tr></table>"
+}
   ]
 };
 
