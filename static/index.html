@@ -151,45 +151,157 @@
 const allQuestions = {
   "temel": [
    {
-  "title": "1.1. SELECT * ile Tüm Verileri Çekmek",
-  "explanation": "`SELECT *` ifadesi, bir tablodaki tüm sütunları ve satırları getirir. Eğer hangi sütunları alacağını bilmiyorsan ya da tüm bilgileri görmek istiyorsan bu kullanılır.",
-  "example": "SELECT * FROM loans;",
-  "question": "loans tablosundaki tüm sütunları ve satırları listeleyin.",
-  "answer": "SELECT * FROM loans;",
-  "output": "<table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>interest_rate</th><th>status</th><th>start_date</th><th>due_date</th><th>risk_level</th></tr><tr><td>1</td><td>1</td><td>10000.00</td><td>18.50</td><td>paid</td><td>2023-01-10</td><td>2023-07-10</td><td>medium</td></tr></table>"
+  "title": "1.1. SELECT * ile Tüm Sütunları Çekme",
+  "explanation": "`SELECT *` komutu, bir tablodaki tüm sütunları ve satırları getirir. Tablonun yapısını tanımak veya tüm veriyi görmek istediğimizde kullanılır.",
+  "example": "SELECT * FROM customers; -- Bu sorgu customers tablosundaki tüm satır ve sütunları getirir.",
+  "question": "defaults tablosundaki tüm sütunları ve satırları getiren sorguyu yazın.",
+  "answer": "SELECT * FROM defaults;",
+  "output": "<table><tr><th>default_id</th><th>customer_id</th><th>reason</th></tr><tr><td>1</td><td>2</td><td>missed payments</td></tr></table>"
 },
   {
-  "title": "1.2. SELECT ile Belirli Sütunları Seçmek",
-  "explanation": "`SELECT sütun1, sütun2` şeklinde kullanarak sadece ilgilendiğiniz sütunları çekebilirsiniz. Bu yöntem veriyi sadeleştirir ve daha okunabilir hale getirir.",
-  "example": "SELECT loan_id, amount FROM loans;",
-  "question": "loans tablosundan sadece kredi numarası (loan_id) ve tutar (amount) bilgilerini çekin.",
-  "answer": "SELECT loan_id, amount FROM loans;",
-  "output": "<table><tr><th>loan_id</th><th>amount</th></tr><tr><td>1</td><td>10000.00</td></tr></table>"
-},  
+  "title": "1.2. Belirli Sütunları Çekmek",
+  "explanation": "`SELECT sütun1, sütun2` şeklinde kullanarak sadece ihtiyacınız olan bilgileri alabilirsiniz. Bu, gereksiz verileri elemine eder.",
+  "example": "SELECT name, city FROM customers; -- Sadece müşteri adları ve şehirleri gelir.",
+  "question": "loans tablosundan yalnızca kredi numarası (loan_id) ve durum (status) sütunlarını çekin.",
+  "answer": "SELECT loan_id, status FROM loans;",
+  "output": "<table><tr><th>loan_id</th><th>status</th></tr><tr><td>1</td><td>paid</td></tr><tr><td>2</td><td>unpaid</td></tr></table>"
+},
+    {
+  "title": "1.3. SELECT AS ile Takma Ad (Alias) Kullanmak",
+  "explanation": "`AS` komutu sütunlara geçici takma adlar verir. Raporlar veya kullanıcı dostu çıktılar hazırlamak için kullanılır.",
+  "example": "SELECT income AS gelir, city AS sehir FROM customers;",
+  "question": "payments tablosundaki `amount_paid` sütununu 'odenen_tutar' adıyla listeleyin.",
+  "answer": "SELECT amount_paid AS odenen_tutar FROM payments;",
+  "output": "<table><tr><th>odenen_tutar</th></tr><tr><td>3000</td></tr></table>"
+},
   {
-    "title": "2. FROM ile Tablo Seçme",
-    "explanation": "`FROM`, verinin hangi tablodan alınacağını belirtir. Her `SELECT` komutunun `FROM` ile birlikte bir tabloya yöneltilmesi gerekir.",
-    "example": "SELECT * FROM loans;",
-    "question": "loans tablosundaki tüm kayıtları getiriniz.",
-    "answer": "SELECT * FROM loans;",
-    "output": "<table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr><tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr></table>"
-  },
+  "title": "1.4. SELECT ile Matematiksel İşlemler",
+  "explanation": "Sayılarla çalışan sütunlar üzerinde toplama (+), çıkarma (-), çarpma (*), bölme (/) gibi işlemler yapabilirsiniz.",
+  "example": "SELECT income, income * 12 AS yillik_gelir FROM customers;",
+  "question": "loans tablosundaki `amount` değerlerinin yarısını (amount / 2) hesaplayıp 'yarisi' takma adıyla listeleyin.",
+  "answer": "SELECT amount / 2 AS yarisi FROM loans;",
+  "output": "<table><tr><th>yarisi</th></tr><tr><td>5000</td></tr><tr><td>7500</td></tr></table>"
+},
+    {
+  "title": "1.5. SELECT DISTINCT ile Tekil Değerleri Almak",
+  "explanation": "`DISTINCT` ifadesi aynı değere sahip satırları eleyerek her benzersiz (eşsiz) değeri yalnızca bir kez getirir.",
+  "example": "SELECT DISTINCT city FROM customers;",
+  "question": "customers tablosundaki tekil medeni durumları (`marital_status`) listeleyen sorguyu yazın.",
+  "answer": "SELECT DISTINCT marital_status FROM customers;",
+  "output": "<table><tr><th>marital_status</th></tr><tr><td>married</td></tr><tr><td>single</td></tr></table>"
+},
+{
+  "title": "2.1. FROM ile Tabloyu Belirtmek",
+  "explanation": "`FROM` ifadesi, verinin hangi tablodan çekileceğini belirtir. `SELECT` komutunun hangi kaynakla çalışacağını belirlemek için kullanılır.",
+  "example": "SELECT income FROM customers; -- customers tablosundan income sütunu alınır.",
+  "question": "defaults tablosundaki tüm verileri getiren SQL sorgusunu yazın.",
+  "answer": "SELECT * FROM defaults;",
+  "output": "<table><tr><th>default_id</th><th>customer_id</th><th>reason</th></tr><tr><td>1</td><td>2</td><td>missed payments</td></tr></table>"
+},
+    {
+  "title": "2.2. FROM ile Tabloya Takma Ad (Alias) Verme",
+  "explanation": "`AS` ifadesi, bir tabloya kısa bir takma ad vererek yazım kolaylığı sağlar. Genellikle JOIN işlemlerinde veya çoklu tablo içeren sorgularda tercih edilir.",
+  "example": "SELECT c.name FROM customers AS c; -- customers tablosu 'c' olarak kısaltıldı.",
+  "question": "payments tablosuna 'p' takma adı vererek `amount_paid` değerlerini listeleyen SQL sorgusunu yazın.",
+  "answer": "SELECT p.amount_paid FROM payments AS p;",
+  "output": "<table><tr><th>amount_paid</th></tr><tr><td>3000</td></tr></table>"
+},
   {
-    "title": "3. WHERE ile Filtreleme",
-    "explanation": "`WHERE`, belirli bir koşulu sağlayan verileri seçmek için kullanılır. Sayısal karşılaştırmalarda =, >, <, >=, <= gibi operatörler; metinler için = ve LIKE kullanılır.",
-    "example": "SELECT * FROM customers WHERE income > 5000;\nSELECT * FROM customers WHERE city = 'Istanbul';",
-    "question": "income değeri 6000'den fazla olan müşterilerin tüm bilgilerini listeleyin.",
-    "answer": "SELECT * FROM customers WHERE income > 6000;",
-    "output": "<table><tr><th>name</th><th>income</th></tr><tr><td>Ayse Demir</td><td>8000</td></tr></table>"
-  },
-  {
-    "title": "4. ORDER BY ile Sıralama",
-    "explanation": "`ORDER BY`, sonuçları sıralamak için kullanılır. Varsayılan sıralama artan (ASC) şekildedir. Azalan sıralama için `DESC` kullanılır.",
-    "example": "SELECT * FROM customers ORDER BY income DESC;",
-    "question": "Kredi skoru en yüksekten en düşüğe sıralı şekilde tüm müşterileri listeleyin.",
-    "answer": "SELECT * FROM customers ORDER BY credit_score DESC;",
-    "output": "<table><tr><th>name</th><th>credit_score</th></tr><tr><td>Ayse Demir</td><td>720</td></tr><tr><td>Ahmet Yilmaz</td><td>650</td></tr></table>"
-  },
+  "title": "3.1. WHERE ile Basit Filtreleme",
+  "explanation": "`WHERE` komutu, sadece belirli bir koşulu sağlayan satırları seçmek için kullanılır. Örneğin, bir müşterinin geliri belli bir değerin üzerindeyse sadece onu listeleyebilirsiniz.",
+  "example": "SELECT name FROM customers WHERE income > 6000; -- Geliri 6000’den fazla olan müşteriler gelir.",
+  "question": "loans tablosunda durumu (status) 'unpaid' olan kredileri listeleyin.",
+  "answer": "SELECT * FROM loans WHERE status = 'unpaid';",
+  "output": "<table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr><tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr></table>"
+},
+    {
+  "title": "3.2. WHERE ile Çoklu Koşullar: AND & OR",
+  "explanation": "`AND` ifadesiyle birden fazla koşul aynı anda kontrol edilir. `OR` ile koşullardan herhangi biri sağlanıyorsa satır seçilir.",
+  "example": "SELECT name FROM customers WHERE income > 4000 AND city = 'Istanbul'; -- Geliri 4000'den fazla ve İstanbul'da yaşayanlar gelir.",
+  "question": "credit_score'u 700’den büyük **veya** doğum yılı 1995 olan müşterileri listeleyin.",
+  "answer": "SELECT * FROM customers WHERE credit_score > 700 OR birth_year = 1995;",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr><tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr></table>"
+},
+    {
+  "title": "3.3. Gelişmiş Filtreleme: BETWEEN, IN, NOT IN",
+  "explanation": "`BETWEEN` ile iki değer arasında kalan veriler alınır. `IN` ile birden fazla sabit değeri kapsayan filtreleme yapılır. `NOT IN` ile belirtilen değerler hariç tutulur.",
+  "example": "SELECT name FROM customers WHERE birth_year BETWEEN 1985 AND 1990; -- 1985-1990 arası doğanları getirir.",
+  "question": "loans tablosunda miktarı (amount) 8000 veya 15000 olan kredileri listeleyin.",
+  "answer": "SELECT * FROM loans WHERE amount IN (8000, 15000);",
+  "output": "<table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr><tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr></table>"
+},
+    {
+  "title": "3.4. Boş Değerleri Kontrol Etmek: IS NULL / IS NOT NULL",
+  "explanation": "SQL’de `NULL` boş veri demektir. Bu verileri filtrelemek için `IS NULL` veya `IS NOT NULL` ifadeleri kullanılır.",
+  "example": "SELECT * FROM customers WHERE job_title IS NOT NULL; -- job_title bilgisi olanları getirir.",
+  "question": "defaults tablosunda reason sütunu boş olmayan kayıtları listeleyin.",
+  "answer": "SELECT * FROM defaults WHERE reason IS NOT NULL;",
+  "output": "<table><tr><th>default_id</th><th>customer_id</th><th>reason</th></tr><tr><td>1</td><td>2</td><td>missed payments</td></tr></table>"
+},
+    {
+  "title": "4.1. Artan Sıralama: ORDER BY ASC",
+  "explanation": "`ORDER BY sütun ASC` ifadesi, verileri o sütuna göre küçükten büyüğe sıralar. `ASC` yazılmasa bile varsayılan olarak zaten artan sıralama uygulanır.",
+  "example": "SELECT name FROM customers ORDER BY credit_score ASC; -- Kredi skoruna göre küçükten büyüğe sıralar.",
+  "question": "payments tablosundaki ödenen tutarları artan şekilde sıralayarak listeleyin.",
+  "answer": "SELECT * FROM payments ORDER BY amount_paid ASC;",
+  "output": "<table><tr><th>payment_id</th><th>loan_id</th><th>amount_paid</th></tr><tr><td>1</td><td>1</td><td>3000</td></tr></table>"
+},
+    {
+  "title": "4.2. Azalan Sıralama: ORDER BY DESC",
+  "explanation": "`ORDER BY sütun DESC` ifadesi, verileri büyükten küçüğe sıralar. Özellikle en yüksek geliri, en büyük kredi miktarını vb. listelemek için kullanılır.",
+  "example": "SELECT name FROM customers ORDER BY income DESC; -- En yüksek gelir en üstte gelir.",
+  "question": "loans tablosundaki kredi tutarlarını azalan şekilde sıralayın.",
+  "answer": "SELECT * FROM loans ORDER BY amount DESC;",
+  "output": "<table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr><tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr><tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr></table>"
+},
+    {
+  "title": "4.3. Çoklu Sıralama: ORDER BY sütun1, sütun2",
+  "explanation": "`ORDER BY sütun1, sütun2` şeklinde sıralama yapılırsa önce birinci sütuna göre sıralanır, eğer eşitlik varsa ikinci sütun dikkate alınır.",
+  "example": "SELECT * FROM customers ORDER BY marital_status, income DESC; -- Önce medeni duruma göre, sonra gelire göre sırala.",
+  "question": "customers tablosunu şehir adına göre artan, ardından doğum yılına göre azalan şekilde sıralayın.",
+  "answer": "SELECT * FROM customers ORDER BY city ASC, birth_year DESC;",
+  "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr><tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr><tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr></table>"
+},
+{
+  "title": "5.1. LIMIT ile İlk n Kayıdı Getirme",
+  "explanation": "`LIMIT` komutu ile sadece belirli sayıda kayıt getirilebilir. Bu, genellikle verinin ilk kısmına bakmak istediğimizde kullanılır.",
+  "example": "SELECT * FROM customers LIMIT 2; -- İlk 2 müşteri getirilir.",
+  "question": "defaults tablosundaki yalnızca ilk kaydı çekin.",
+  "answer": "SELECT * FROM defaults LIMIT 1;",
+  "output": "<table><tr><th>default_id</th><th>customer_id</th><th>reason</th></tr><tr><td>1</td><td>2</td><td>missed payments</td></tr></table>"
+},
+    {
+  "title": "5.2. LIMIT ve ORDER BY ile En Yüksek Değerli İlk Kayıt",
+  "explanation": "`ORDER BY` ile veriler sıralanır, ardından `LIMIT` ile sadece ilk sonuçlar getirilir. Bu, örneğin en yüksek miktarlı krediyi çekmek için idealdir.",
+  "example": "SELECT * FROM customers ORDER BY income DESC LIMIT 1; -- En yüksek gelire sahip müşteri getirilir.",
+  "question": "loans tablosundaki en küçük tutarlı krediyi çekin.",
+  "answer": "SELECT * FROM loans ORDER BY amount ASC LIMIT 1;",
+  "output": "<table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr><tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr></table>"
+},
+    {
+  "title": "6.1. INNER JOIN ile Tablo Birleştirme",
+  "explanation": "`INNER JOIN` ile iki tablo ortak bir sütuna göre birleştirilir ve sadece eşleşen satırlar alınır.",
+  "example": "SELECT name, amount FROM customers JOIN loans ON customers.customer_id = loans.customer_id;",
+  "question": "payment yapılan krediler için müşteri adını ve ödeme tutarını gösterin.",
+  "answer": "SELECT name, amount_paid FROM customers JOIN loans ON customers.customer_id = loans.customer_id JOIN payments ON loans.loan_id = payments.loan_id;",
+  "output": "<table><tr><th>name</th><th>amount_paid</th></tr><tr><td>Ahmet Yilmaz</td><td>3000</td></tr></table>"
+},
+    {
+  "title": "6.2. LEFT JOIN ile Eşleşmeyen Verileri Dahil Etme",
+  "explanation": "`LEFT JOIN` ile birleştirme yapılırken sol tablodaki veriler her koşulda alınır. Sağdaki eşleşmeyen verilerde boş (`NULL`) görünebilir.",
+  "example": "SELECT name, reason FROM customers LEFT JOIN defaults ON customers.customer_id = defaults.customer_id;",
+  "question": "defaults tablosundaki verileri, müşterilerle birleştirerek gösterin. Eşleşmeyen müşteri olursa da gösterilsin.",
+  "answer": "SELECT d.customer_id, name FROM defaults d LEFT JOIN customers c ON d.customer_id = c.customer_id;",
+  "output": "<table><tr><th>customer_id</th><th>name</th></tr><tr><td>2</td><td>Ayse Demir</td></tr></table>"
+},
+    {
+  "title": "6.3. JOIN Kullanırken Alias (Takma Ad) Kullanımı",
+  "explanation": "`AS` ile tablolara kısa takma adlar (alias) vererek okunabilirliği artırabiliriz. `c.name`, `l.amount` gibi yazmak daha kısa ve temiz olur.",
+  "example": "SELECT c.name, l.amount FROM customers AS c JOIN loans AS l ON c.customer_id = l.customer_id;",
+  "question": "alias kullanarak müşteri adları ve kredi durumunu listeleyin.",
+  "answer": "SELECT c.name, l.status FROM customers AS c JOIN loans AS l ON c.customer_id = l.customer_id;",
+  "output": "<table><tr><th>name</th><th>status</th></tr><tr><td>Ahmet Yilmaz</td><td>paid</td></tr><tr><td>Ayse Demir</td><td>unpaid</td></tr></table>"
+},
   {
     "title": "5. LIMIT ile Veri Sayısını Sınırlama",
     "explanation": "`LIMIT`, sonuç kümesinden kaç tane satır görüntüleneceğini belirler. İlk birkaç veriyi görmek için sıklıkla kullanılır.",
@@ -197,40 +309,8 @@ const allQuestions = {
     "question": "customers tablosundaki ilk 3 müşteriyi listeleyin.",
     "answer": "SELECT * FROM customers LIMIT 3;",
     "output": "<table><tr><th>name</th></tr><tr><td>Ahmet Yilmaz</td></tr><tr><td>Ayse Demir</td></tr><tr><td>Can Kaya</td></tr></table>"
-  },
-  {
-    "title": "6. DISTINCT ile Benzersiz Değerleri Alma",
-    "explanation": "`DISTINCT` komutu, tekrarlanan değerleri sadece bir kere gösterir. Genellikle bir sütundaki benzersiz girdileri görmek için kullanılır.",
-    "example": "SELECT DISTINCT city FROM customers;",
-    "question": "customers tablosundaki farklı şehirleri listeleyin.",
-    "answer": "SELECT DISTINCT city FROM customers;",
-    "output": "<table><tr><th>city</th></tr><tr><td>Istanbul</td></tr><tr><td>Ankara</td></tr><tr><td>Izmir</td></tr></table>"
-  },
-  {
-    "title": "7. AS ile Takma Ad (Alias)",
-    "explanation": "`AS` ile sütun veya tablo isimlerine takma ad verilebilir. Bu, özellikle daha okunabilir sonuçlar elde etmek için kullanılır.",
-    "example": "SELECT name AS isim, income AS gelir FROM customers;",
-    "question": "name sütununa 'müşteri_ismi' takma adı vererek listeleyin.",
-    "answer": "SELECT name AS müşteri_ismi FROM customers;",
-    "output": "<table><tr><th>müşteri_ismi</th></tr><tr><td>Ahmet Yilmaz</td></tr><tr><td>Ayse Demir</td></tr></table>"
-  },
-  {
-    "title": "8. Aritmetik İşlemler",
-    "explanation": "SQL, temel matematiksel işlemleri destekler. Bunlar: toplama (+), çıkarma (-), çarpma (*), bölme (/), mod alma (%).",
-    "example": "SELECT income, income * 12 AS yillik_gelir FROM customers;",
-    "question": "Gelirleri 12 ile çarpıp yıllık gelir sütunu oluşturun.",
-    "answer": "SELECT income * 12 AS yillik_gelir FROM customers;",
-    "output": "<table><tr><th>yillik_gelir</th></tr><tr><td>60000</td></tr><tr><td>96000</td></tr></table>"
-  },
-  {
-    "title": "9. NULL ve IS NULL Kullanımı",
-    "explanation": "`NULL`, bilinmeyen ya da boş veri anlamına gelir. `IS NULL` ile boş olanlar, `IS NOT NULL` ile dolu olanlar filtrelenebilir.",
-    "example": "SELECT * FROM customers WHERE job_title IS NULL;",
-    "question": "Meslek bilgisi girilmemiş olan müşterileri listeleyin.",
-    "answer": "SELECT * FROM customers WHERE job_title IS NULL;",
-    "output": "<table><tr><th>customer_id</th><th>name</th></tr></table>"
   }
-  ],
+],
   "orta": [
     {
       "title": "1. JOIN ile Tablo Birle\u015ftirme",
