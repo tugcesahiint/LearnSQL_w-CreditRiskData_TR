@@ -38,6 +38,14 @@
     .header {
       font-size: 24px; font-weight: bold; margin-bottom: 10px;
     }
+    button.send-pdf {
+      background: var(--primary);
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
     .level-buttons {
       display: flex; gap: 10px; margin-bottom: 10px;
     }
@@ -143,14 +151,21 @@
 <div class="main">
   <div class="sticky-top">
     <div class="header">📊 Kredi Riski Verileriyle Uygulamalı SQL - Tuğçe Şahin</div>
+
     <div class="level-buttons">
       <button onclick="loadLevel('merhaba', this)">👋 Merhaba</button>
       <button onclick="loadLevel('temel', this)">🟢 Temel</button>
       <button onclick="loadLevel('orta', this)">🟡 Orta</button>
       <button onclick="loadLevel('ileri', this)">🔴 İleri</button>
     </div>
-    <div class="score">✅ Doğru Sayısı: <span id="score">0</span></div>
+
+    <!-- Doğru sayısı ve PDF gönderme butonu aynı satırda -->
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="score">✅ Doğru Sayısı: <span id="score">0</span></div>
+      <button class="send-pdf" onclick="sendPDF()">📧 PDF Gönder</button>
+    </div>
   </div>
+
   <div id="questions" style="margin-top: 20px;"></div>
 </div>
 
