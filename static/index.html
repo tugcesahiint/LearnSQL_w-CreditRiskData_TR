@@ -99,31 +99,41 @@
 <body>
 <div class="theme-toggle" style="z-index:9999;" onclick="toggleTheme()">🌙/☀️</div>
 
-<div class="sidebar">
-  <h2>📁 Tablolar</h2>
+<div class="sidebar" style="font-size: 11px;">
+  <h2 style="font-size: 14px;">📁 Tablolar</h2>
   <div class="table-scroll">
+  
     <h4>customers</h4>
-    <div class="table-scroll"><table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr>
-      <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr>
-      <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr>
-      <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr>
-    </table></div>
+    <div class="table-scroll" style="overflow-x: auto;">
+      <table style="font-size: 10px;">
+        <tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th><th>city</th><th>birth_year</th><th>marital_status</th><th>job_title</th></tr>
+        <tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td><td>Istanbul</td><td>1985</td><td>married</td><td>Engineer</td></tr>
+        <tr><td>2</td><td>Ayse Demir</td><td>8000</td><td>720</td><td>Ankara</td><td>1990</td><td>single</td><td>Doctor</td></tr>
+        <tr><td>3</td><td>Can Kaya</td><td>3000</td><td>580</td><td>Izmir</td><td>1995</td><td>single</td><td>Student</td></tr>
+      </table>
+    </div>
+
     <h4>loans</h4>
-    <table><tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr>
+    <table style="font-size: 10px;">
+      <tr><th>loan_id</th><th>customer_id</th><th>amount</th><th>status</th></tr>
       <tr><td>1</td><td>1</td><td>10000</td><td>paid</td></tr>
       <tr><td>2</td><td>2</td><td>15000</td><td>unpaid</td></tr>
     </table>
+
     <h4>defaults</h4>
-    <table><tr><th>default_id</th><th>customer_id</th><th>reason</th></tr>
+    <table style="font-size: 10px;">
+      <tr><th>default_id</th><th>customer_id</th><th>reason</th></tr>
       <tr><td>1</td><td>2</td><td>missed payments</td></tr>
     </table>
+
     <h4>payments</h4>
-    <table><tr><th>payment_id</th><th>loan_id</th><th>amount_paid</th></tr>
+    <table style="font-size: 10px;">
+      <tr><th>payment_id</th><th>loan_id</th><th>amount_paid</th></tr>
       <tr><td>1</td><td>1</td><td>3000</td></tr>
     </table>
+
   </div>
 </div>
-
 <div class="main">
   <div class="sticky-top">
     <div class="header">📊 SQL Öğrenme Platformu</div>
