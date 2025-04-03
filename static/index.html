@@ -144,6 +144,7 @@
   <div class="sticky-top">
     <div class="header">📊 Kredi Riski Verileriyle Uygulamalı SQL - Tuğçe Şahin</div>
     <div class="level-buttons">
+      <button onclick="loadLevel('merhaba', this)">👋 Merhaba</button>
       <button onclick="loadLevel('temel', this)">🟢 Temel</button>
       <button onclick="loadLevel('orta', this)">🟡 Orta</button>
       <button onclick="loadLevel('ileri', this)">🔴 İleri</button>
@@ -155,14 +156,17 @@
 
 <script>
 const allQuestions = {
+  "merhaba": [
+  {
+    "title": "👋 Merhaba, Ben Tuğçe!",
+    "explanation": "Bu proje, SQL’i uygulamalı olarak öğrenmek isteyenler için özel olarak hazırlandı. Gerçek banka verilerine benzer tablolarla, interaktif ve seviyelendirilmiş sorularla ilerleyebilirsin. Küçük yazım hataları cevaplarda etkili olabilir, bu nedenle dikkatli olmanı öneririm. Bu özelliği zamanla daha esnek hale getirmeyi planlıyorum.",
+    "example": "📘 İçerik seviyeleri:\n- 🟢 Temel: SELECT, WHERE, ORDER BY gibi komutları öğrenirsin.\n- 🟡 Orta: JOIN, GROUP BY, LIKE gibi konulara geçilir.\n- 🔴 İleri: CTE, WINDOW FUNCTIONS gibi analizsel SQL konuları işlenir.",
+    "question": "<strong>Nasıl Kullanılır?</strong><br>Yukarıdan bir seviye seçin. Açılan soruların örneklerini inceleyin, SQL cevabınızı yazın ve 'Cevabı Kontrol Et' tuşuna basın.",
+    "answer": "",
+    "output": "<p><strong>📩 LinkedIn üzerinden bana ulaşmak için:</strong> <a href='https://www.linkedin.com/in/tugcesahin' target='_blank'>tugcesahin</a></p>"
+  }
+],
   "temel": [
-    {
-  "title": "🎓 Hoş Geldiniz!",
-  "explanation": "Ben Tuğçe! Bu projeyi, SQL'i uygulamalı ve tamamen Türkçe olarak öğrenebilmeniz için hazırladım. Temel seviyede bankacılık verileri kullanılarak SELECT, WHERE, JOIN gibi konuların mantığını hem örneklerle hem de interaktif sorularla pekiştirebilirsiniz. Özellikle yeni başlayanlar ve bankacılık verileri ıle pratik yapmak isteyenler için tasarlandı.",
-  "example": "SELECT * FROM sql;",
-  "question": "Hazırsanız başlayalım! Yukarıdan bir seviye seçin ve öğrenmeye geçin. Sorulara başlamadan önce not: Yazdığınız SQL komutları harfiyen kontrol edilir. Küçük yazım farkları bile sonucu etkileyebilir. Bu özelliği ileride daha esnek hale getirmeyi planlıyorum.",
-  "example": "<p><strong>📩 Geri bildirim ya da iş birliği için:</strong> <a href='https://www.linkedin.com/in/tugcesahin' target='_blank'>LinkedIn'den ulaşabilirsiniz</a></p>"
-},
     {
   "title": "1.1. SELECT * ile Tüm Sütunları Çekme",
   "explanation": "`SELECT *` komutu, bir tablodaki tüm sütunları ve satırları getirir. Tablonun yapısını tanımak veya tüm veriyi görmek istediğimizde kullanılır.",
