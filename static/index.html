@@ -408,23 +408,13 @@ function loadLevel(level, buttonEl = null) {
 }
 
 
-async function checkAnswer(level, i) {
-  const input = document.getElementById(`answer-${i}`).value.trim();
-  const correct = allQuestions[level][i].answer.trim();
-
+function checkAnswer(level, i) {
+  const input = document.getElementById(`answer-${i}`).value.trim().toUpperCase();
+  const correct = allQuestions[level][i].answer.trim().toUpperCase();
   const resultSpan = document.getElementById(`result-${i}`);
   const outputDiv = document.getElementById(`output-${i}`);
 
-  // GPT API’ye POST isteği gönder
-  const res = await fetch('/api/check-sql', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ user_sql: input, correct_sql: correct })
-  });
-
-  const data = await res.json();
-
-  if (data.result.includes("DOĞRU")) {
+  if (input === correct) {
     resultSpan.innerText = '✔️';
     resultSpan.className = 'correct';
     outputDiv.innerHTML = `<p><strong>✔️ Doğru! Beklenen Sonuç:</strong></p>${allQuestions[level][i].output}`;
@@ -445,4 +435,3 @@ window.onload = () => loadLevel('temel');
 </script>
 </body>
 </html>
-
