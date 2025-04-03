@@ -141,45 +141,77 @@
 const allQuestions = {
   "temel": [
     {
-      "title": "1. SELECT ile S\u00fctun Se\u00e7imi",
-      "explanation": "`SELECT` komutu, tabloda g\u00f6rmek istedi\u011fimiz s\u00fctunlar\u0131 se\u00e7memizi sa\u011flar.",
+      "title": "1. SELECT ile Sütun Seçimi",
+      "explanation": "`SELECT` komutu, tabloda görmek istediğimiz sütunları seçmemizi sağlar.",
       "example": "SELECT name, income FROM customers;",
-      "question": "customers tablosundaki t\u00fcm isimleri ve gelir bilgilerini listeleyin.",
+      "question": "customers tablosundaki tüm isimleri ve gelir bilgilerini listeleyin.",
       "answer": "SELECT name, income FROM customers;",
       "output": "<table><tr><th>name</th><th>income</th></tr><tr><td>Ahmet Yilmaz</td><td>5000</td></tr><tr><td>Ayse Demir</td><td>8000</td></tr><tr><td>Can Kaya</td><td>3000</td></tr></table>"
     },
     {
       "title": "2. FROM ile Tablo Belirtme",
-      "explanation": "`FROM` komutu, verinin hangi tablodan \u00e7ekilece\u011fini belirtir. Genellikle `SELECT`'ten sonra gelir.",
+      "explanation": "`FROM` ifadesi, verinin hangi tablodan alınacağını belirtir. Genellikle `SELECT` ifadesinden sonra gelir.",
       "example": "SELECT * FROM customers;",
-      "question": "customers tablosundaki t\u00fcm verileri \u00e7ekin.",
+      "question": "customers tablosundaki tüm verileri çekin.",
       "answer": "SELECT * FROM customers;",
       "output": "<table><tr><th>customer_id</th><th>name</th><th>income</th><th>credit_score</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td><td>5000</td><td>650</td></tr></table>"
     },
     {
-      "title": "3. WHERE ile \u015eartl\u0131 Se\u00e7im",
-      "explanation": "`WHERE` ifadesi ile belirli ko\u015fullar\u0131 sa\u011flayan sat\u0131rlar\u0131 filtreleyebiliriz.",
+      "title": "3. WHERE ile Şartlı Seçim",
+      "explanation": "`WHERE` ifadesi ile belirli koşulları sağlayan satırlar filtrelenir.",
       "example": "SELECT name FROM customers WHERE income > 4000;",
-      "question": "Geliri 5000\u2019den fazla olan m\u00fc\u015fterilerin adlar\u0131n\u0131 listeleyin.",
+      "question": "Geliri 5000’den fazla olan müşterilerin adlarını listeleyin.",
       "answer": "SELECT name FROM customers WHERE income > 5000;",
       "output": "<table><tr><th>name</th></tr><tr><td>Ayse Demir</td></tr></table>"
     },
     {
-      "title": "4. ORDER BY ile S\u0131ralama",
-      "explanation": "`ORDER BY` komutu, sonu\u00e7lar\u0131 bir veya daha fazla s\u00fctuna g\u00f6re s\u0131ralar. ASC (artan) veya DESC (azalan) kullan\u0131labilir.",
-      "example": "SELECT * FROM customers ORDER BY income DESC;",
-      "question": "customers tablosunu do\u011fum y\u0131l\u0131na g\u00f6re artan \u015fekilde s\u0131ralay\u0131n.",
+      "title": "4. ORDER BY ile Sıralama",
+      "explanation": "`ORDER BY` komutu, sonuçları bir veya daha fazla sütuna göre sıralar.",
+      "example": "SELECT name FROM customers ORDER BY income ASC;",
+      "question": "customers tablosunu doğum yılına göre artan şekilde sıralayın.",
       "answer": "SELECT * FROM customers ORDER BY birth_year ASC;",
       "output": "<table><tr><th>name</th><th>birth_year</th></tr><tr><td>Ahmet Yilmaz</td><td>1985</td></tr><tr><td>Ayse Demir</td><td>1990</td></tr><tr><td>Can Kaya</td><td>1995</td></tr></table>"
     },
-    {
-      "title": "5. LIMIT ile Kay\u0131t Say\u0131s\u0131n\u0131 S\u0131n\u0131rlama",
-      "explanation": "`LIMIT` komutu, d\u00f6nen sonu\u00e7lar\u0131n say\u0131s\u0131n\u0131 s\u0131n\u0131rland\u0131rmak i\u00e7in kullan\u0131l\u0131r.",
-      "example": "SELECT * FROM customers LIMIT 2;",
-      "question": "customers tablosundan sadece ilk m\u00fc\u015fteriyi \u00e7ekin.",
-      "answer": "SELECT * FROM customers LIMIT 1;",
-      "output": "<table><tr><th>customer_id</th><th>name</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td></tr></table>"
-    }
+  {
+    "title": "5. LIMIT ile Kayıt Sınırlandırma",
+    "explanation": "`LIMIT` komutu, dönen veri sayısını sınırlandırmak için kullanılır.",
+    "example": "SELECT * FROM customers LIMIT 2;",
+    "question": "customers tablosundan sadece ilk müşteriyi çekin.",
+    "answer": "SELECT * FROM customers LIMIT 1;",
+    "output": "<table><tr><th>customer_id</th><th>name</th></tr><tr><td>1</td><td>Ahmet Yilmaz</td></tr></table>"
+  },
+  {
+    "title": "6. DISTINCT ile Tekil Değerler",
+    "explanation": "`DISTINCT`, sadece birbirinden farklı değerleri listeler.",
+    "example": "SELECT DISTINCT city FROM customers;",
+    "question": "customers tablosundaki benzersiz şehirleri listeleyin.",
+    "answer": "SELECT DISTINCT city FROM customers;",
+    "output": "<table><tr><th>city</th></tr><tr><td>Istanbul</td></tr><tr><td>Ankara</td></tr><tr><td>Izmir</td></tr></table>"
+  },
+  {
+    "title": "7. AS ile Takma Ad Verme",
+    "explanation": "`AS`, sütunlara geçici takma ad vermek için kullanılır.",
+    "example": "SELECT name AS isim, income AS gelir FROM customers;",
+    "question": "income sütununa 'gelir' takma adını vererek listeleyin.",
+    "answer": "SELECT income AS gelir FROM customers;",
+    "output": "<table><tr><th>gelir</th></tr><tr><td>5000</td></tr><tr><td>8000</td></tr><tr><td>3000</td></tr></table>"
+  },
+  {
+    "title": "8. Temel Matematik İşlemleri",
+    "explanation": "SQL'de aritmetik işlemler yapılabilir: +, -, *, /, %",
+    "example": "SELECT income, income * 12 AS yillik_gelir FROM customers;",
+    "question": "income değerlerini 12 ile çarpıp 'yillik_gelir' olarak listeleyin.",
+    "answer": "SELECT income * 12 AS yillik_gelir FROM customers;",
+    "output": "<table><tr><th>yillik_gelir</th></tr><tr><td>60000</td></tr><tr><td>96000</td></tr><tr><td>36000</td></tr></table>"
+  },
+  {
+    "title": "9. NULL ve IS NULL",
+    "explanation": "`NULL` boş değerleri temsil eder. `IS NULL` ve `IS NOT NULL` ile kontrol edilir.",
+    "example": "SELECT * FROM customers WHERE job_title IS NULL;",
+    "question": "job_title bilgisi olmayan müşterileri listeleyin.",
+    "answer": "SELECT * FROM customers WHERE job_title IS NULL;",
+    "output": "<table><tr><th>customer_id</th><th>name</th><th>job_title</th></tr></table>"
+  }
   ],
   "orta": [
     {
